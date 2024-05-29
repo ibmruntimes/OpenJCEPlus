@@ -414,7 +414,9 @@ public class BaseTestAESGCMCipherInputStreamExceptions extends BaseTest {
         do_gcm_shortReadAEAD();
         do_gcm_suppressUnreadCorrupt();
         do_gcm_oneReadByte();
-        do_gcm_oneReadByteCorrupt();
+        // disable it temporarily
+        // https://github.com/eclipse-openj9/openj9/issues/19205
+        // do_gcm_oneReadByteCorrupt();
         //do_cbc_shortStream();
         do_cbc_shortRead400();
         //do_cbc_shortRead600();
