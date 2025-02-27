@@ -8,7 +8,11 @@ Java and all Java-based trademarks are trademarks of Oracle Corporation in the U
 
 ## Applicable Licenses
 
-Apache-2.0. See included module OPENJCEPLUS_LICENCE file for details.
+The GNU General Public License (GPL) Version 2 with "Classpath" exceptions. See included module OPENJCEPLUS_LICENCE file for details.
+
+Portions of OpenJCEPlus may be based on code made available by Oracle in OpenJDK files designated as subject to the Oracle ClassPath Exception described at https://openjdk.org/legal/gplv2+ce.html. Such code is copyright Oracle America, Inc. or its affiliates.
+
+Apache-2.0. See OpenCryptographyKitC License link below for details.
 
 As part of a FIPS 140-3 technology preview capability, this Semeru Runtimes distribution includes a modified OpenSSL 1.1.1 toolkit binary that is currently
 undergoing FIPS 140-3 certification testing at the U.S. National Institute of Standards and Technology (NIST). Because this toolkit version was built and
@@ -32,6 +36,7 @@ This module leverages the following third party content.
 OpenJCEPlus
 
 * License: https://github.com/IBM/OpenJCEPlus/blob/main/LICENSE
+* Notices: https://github.com/IBM/OpenJCEPlus/blob/main/NOTICES.md
 * Project: https://github.com/IBM/OpenJCEPlus
 * Source: https://github.com/IBM/OpenJCEPlus
 
