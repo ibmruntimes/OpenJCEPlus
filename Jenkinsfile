@@ -139,7 +139,7 @@ def getOCKTarget(hardware, software) {
  */
 def getBinaries(hardware, software) {
     if (OCK_RELEASE == "") {
-        OCK_RELEASE = "20250522_8.9.11"
+        OCK_RELEASE = "20250823_8.9.14"
     }
     def target = getOCKTarget(hardware, software)
     def gskit_bin = "https://na.artifactory.swg-devops.com/artifactory/sec-gskit-javasec-generic-local/gskit8/$OCK_RELEASE/$target/jgsk_crypto.tar"
@@ -646,7 +646,7 @@ pipeline {
             Overall build timeout (HOURS)')
     }
 
-    agent any
+    agent none
     stages {
         stage('Build And Test OpenJCEPlus') {
             steps {
