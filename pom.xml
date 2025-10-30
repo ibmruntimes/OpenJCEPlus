@@ -410,7 +410,7 @@
                         <message>"Property ock.library.path is not set, perhaps this required property is missing from the command line?"</message>
                       </requireProperty>
                       <requireJavaVersion>
-                        <version>[24,25]</version>
+                        <version>[25,26]</version>
                         <message>"Java 24 or 25 required to build OpenJCEPlus."</message>
                       </requireJavaVersion>
                       <requireEnvironmentVariable>
