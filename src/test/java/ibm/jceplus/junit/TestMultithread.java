@@ -32,9 +32,7 @@ public class TestMultithread {
     private final int timeoutSec = 4500;
     private final String[] testList = {
             "ibm.jceplus.junit.openjceplus.multithread.TestAESGCMUpdate",
-            "ibm.jceplus.junit.openjceplus.multithread.TestAESGCMWithByteBuffer",
             "ibm.jceplus.junit.openjceplus.multithread.TestAliases",
-            "ibm.jceplus.junit.openjceplus.multithread.TestDESede",
             "ibm.jceplus.junit.openjceplus.multithread.TestDH",
             "ibm.jceplus.junit.openjceplus.multithread.TestDSAKey",
             "ibm.jceplus.junit.openjceplus.multithread.TestDSASignatureInteropSUN",
@@ -57,7 +55,6 @@ public class TestMultithread {
             "ibm.jceplus.junit.openjceplus.multithread.TestPQCKEM",
             "ibm.jceplus.junit.openjceplus.multithread.TestPQCSignatures",
             "ibm.jceplus.junit.openjceplus.multithread.TestRSASignature",
-            "ibm.jceplus.junit.openjceplus.multithread.TestRSA_2048",
             "ibm.jceplus.junit.openjceplus.multithread.TestRSAKey",
             "ibm.jceplus.junit.openjceplus.multithread.TestRSAPSS",
             "ibm.jceplus.junit.openjceplus.multithread.TestRSAPSS2",

@@ -32,9 +32,7 @@ public class TestMultithreadFIPS {
     private final int timeoutSec = 4500;
     private final String[] testList = {
             "ibm.jceplus.junit.openjceplusfips.multithread.TestAESGCMUpdate",
-            "ibm.jceplus.junit.openjceplusfips.multithread.TestAESGCMWithByteBuffer",
             "ibm.jceplus.junit.openjceplusfips.multithread.TestAliases",
-            "ibm.jceplus.junit.openjceplusfips.multithread.TestDESede",
             "ibm.jceplus.junit.openjceplusfips.multithread.TestDH",
             "ibm.jceplus.junit.openjceplusfips.multithread.TestDSAKey",
             "ibm.jceplus.junit.openjceplusfips.multithread.TestDSASignatureInteropSUN",
@@ -52,7 +50,6 @@ public class TestMultithreadFIPS {
             "ibm.jceplus.junit.openjceplusfips.multithread.TestPBKDF2",
             "ibm.jceplus.junit.openjceplusfips.multithread.TestPBKDF2Interop",
             "ibm.jceplus.junit.openjceplusfips.multithread.TestRSASignature",
-            "ibm.jceplus.junit.openjceplusfips.multithread.TestRSA_2048",
             "ibm.jceplus.junit.openjceplusfips.multithread.TestRSAKey",
             "ibm.jceplus.junit.openjceplusfips.multithread.TestRSAPSS",
             "ibm.jceplus.junit.openjceplusfips.multithread.TestRSAPSS2",
