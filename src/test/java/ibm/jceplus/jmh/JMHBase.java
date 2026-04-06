@@ -9,6 +9,7 @@
 package ibm.jceplus.jmh;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.Provider;
@@ -40,6 +41,7 @@ abstract public class JMHBase {
         String projectHomeDir = System.getProperty("jmh.project.dir");
         String ockLibraryPath = System.getProperty("ock.library.path");
         String jgskitLibraryPath = System.getProperty("jgskit.library.path");
+        String osArch = System.getProperty("os.arch", "").toLowerCase();
         String osName = System.getProperty("os.name").toLowerCase();
         String threadsProperty = System.getProperty("jmh.threads", "1");
         String allowedProv = System.getProperty("jmh.allowedProviders");
@@ -55,6 +57,7 @@ abstract public class JMHBase {
         System.out.println("Home dir: " + projectHomeDir);
         System.out.println("JGSkit Library Path: " + jgskitLibraryPath);
         System.out.println("Regex of classes to run: " + regexClassName);
+        System.out.println("OS Arch: " + osArch);
         System.out.println("OS Name: " + osName);
         System.out.println("Thread count: " + threads);
         System.out.println("Allowed providers: " + allowedProv);
@@ -69,7 +72,14 @@ abstract public class JMHBase {
         optionsBuilder.addProfiler(StackProfiler.class);
         optionsBuilder.addProfiler(GCProfiler.class);
         optionsBuilder.addProfiler(ClassloaderProfiler.class);
-        optionsBuilder.addProfiler(CompilerProfiler.class);
+        
+        // CompilerProfiler causes issues on ppc64le Linux which causes the Jenkins job to fail.
+        // Add the compiler profiler for all other platforms.
+        boolean isPpc64le = osArch.equals("ppc64le");
+        boolean isLinux = osName.contains("linux");
+        if (!(isPpc64le && isLinux)) {
+            optionsBuilder.addProfiler(CompilerProfiler.class);
+        }
         List<String> jvmArgs = new ArrayList<>(Arrays.asList("-Xms1G", "-Xmx1G", "--patch-module",
                 "openjceplus=" + projectHomeDir + "/target/classes",
                 "--add-exports=java.base/sun.security.util=ALL-UNNAMED",
@@ -112,7 +122,33 @@ abstract public class JMHBase {
         }
     }
 
+    private void logBenchmark() throws IllegalAccessException {
+        // JMH auto-generates multiple subclasses of the original benchmark.
+        Class<?> subClass = this.getClass();
+        Class<?> originalClass = subClass.getSuperclass();
+        while (originalClass != null && originalClass.getSimpleName().contains("_jmhType")) {
+            originalClass = originalClass.getSuperclass();
+        }
+        if (originalClass != null) {
+            System.out.println("Running " + originalClass.getSimpleName() + " with:");
+            Field[] allFields = originalClass.getDeclaredFields();
+            for (Field field : allFields) {
+                field.setAccessible(true);
+                if ((field.getType() == String.class)
+                    || (field.getType() == int.class)
+                ) {
+                    System.out.println("\t" + field.getName() + " = " + field.get(this));
+                }
+            }
+        } else {
+            System.out.println("Running " + subClass.getSimpleName() + ":");
+            System.out.println("\tNote: Failed to get original benchmark name");
+        }
+    }
+
     protected void setup(String provider) throws Exception {
+        logBenchmark();
+        
         if (allowedProviders == null) {
             allowedProviders = getAllowedProviders();
         }
