@@ -14,14 +14,9 @@ Portions of OpenJCEPlus may be based on code made available by Oracle in OpenJDK
 
 Apache-2.0. See OpenCryptographyKitC License link below for details.
 
-As part of a FIPS 140-3 technology preview capability, this Semeru Runtimes distribution includes a modified OpenSSL 1.1.1 toolkit binary that is currently
-undergoing FIPS 140-3 certification testing at the U.S. National Institute of Standards and Technology (NIST). Because this toolkit version was built and
-submitted to NIST before we contributed its code to an open source project (now at https://github.com/IBM/OpenCryptographyKitC), the toolkit binary included in
-this release contains strings that reference an IBM license. These strings have been removed from the open-source version of the toolkit in addition to other
-minor updates.
+This Semeru Runtimes distribution includes a modified OpenSSL 1.1.1 toolkit binary. For Linux on IBM Z and z/OS only, this support is provided as a technical preview and is currently undergoing FIPS 140-3 certification testing at the U.S. National Institute of Standards and Technology (NIST). All other supported platforms are fully certified by NIST. Because this toolkit version was built and submitted to NIST before we contributed its code to an open source project (now at https://github.com/IBM/OpenCryptographyKitC), the toolkit binary included in this release contains strings that reference an IBM license. These strings have been removed from the open-source version of the toolkit in addition to other minor updates.
 
-This notice supersedes the IBM license expressed in the binary itself. The toolkit binary for use with the FIPS 140-3 technology preview capability license
-terms are found in https://github.com/IBM/OpenCryptographyKitC/blob/main/LICENSE.
+The toolkit binary for use with the FIPS 140-3 license terms can be found at https://github.com/IBM/OpenCryptographyKitC/blob/main/LICENSE.
 
 ### Cryptography
 
