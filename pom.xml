@@ -294,6 +294,8 @@
                       <printStderrOnFailure>true</printStderrOnFailure>
                       <printStderrOnSuccess>false</printStderrOnSuccess>
                     </statelessTestsetInfoReporter>
+                    <!-- Activate the use of TCP to transmit events to the plugin -->
+                    <forkNode implementation="org.apache.maven.plugin.surefire.extensions.SurefireForkNodeFactory"/>
                   </configuration>
                 </plugin>
                 <plugin>
@@ -427,6 +429,8 @@
                       <printStderrOnFailure>true</printStderrOnFailure>
                       <printStderrOnSuccess>false</printStderrOnSuccess>
                     </statelessTestsetInfoReporter>
+                    <!-- Activate the use of TCP to transmit events to the plugin -->
+                    <forkNode implementation="org.apache.maven.plugin.surefire.extensions.SurefireForkNodeFactory"/>
                   </configuration>
                 </plugin>
               </plugins>
@@ -677,7 +681,7 @@
                     <nuspecAnalyzerEnabled>false</nuspecAnalyzerEnabled>
                     <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
                     <cocoapodsAnalyzerEnabled>false</cocoapodsAnalyzerEnabled>
-                </configuration>     
+                </configuration>
             </plugin>
         </plugins>
         <resources>
