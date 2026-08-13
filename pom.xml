@@ -250,6 +250,7 @@
                       --add-exports=openjceplus/ibm.jceplus.junit.base.memstress=ALL-UNNAMED
                       --add-exports=openjceplus/ibm.jceplus.junit.suites=ALL-UNNAMED
                       --add-exports=openjceplus/ibm.jceplus.junit.tests=ALL-UNNAMED
+                      --add-exports=openjceplus/ibm.jceplus.junit.tests.parameters.resolvers=ALL-UNNAMED
                       --add-exports=openjceplus/ibm.jceplus.junit.openjceplus=ALL-UNNAMED
                       --add-exports=openjceplus/ibm.jceplus.junit.openjceplus.integration=ALL-UNNAMED
                       --add-exports=openjceplus/ibm.jceplus.junit.openjceplus.memstress=ALL-UNNAMED
@@ -259,6 +260,7 @@
                       --add-exports=openjceplus/ibm.jceplus.junit.openjceplusfips.multithread=ALL-UNNAMED
                       --add-opens=openjceplus/ibm.jceplus.junit.base=ALL-UNNAMED
                       --add-opens=openjceplus/ibm.jceplus.junit.tests=ALL-UNNAMED
+                      --add-opens=openjceplus/ibm.jceplus.junit.tests.parameters.resolvers=ALL-UNNAMED
                       --patch-module openjceplus="target${file.separator}classes${path.separator}target${file.separator}test-classes"
                       -Djava.security.auth.debug=${java.security.auth.debug}
                     </argLine>

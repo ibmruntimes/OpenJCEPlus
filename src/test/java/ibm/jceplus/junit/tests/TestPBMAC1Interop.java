@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 @Tag(Tags.OPENJCEPLUS_NAME)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ParameterizedClass
-@MethodSource("ibm.jceplus.junit.tests.TestArguments#getOpenJCEPlusOnly")
+@MethodSource("ibm.jceplus.junit.tests.TestArguments#getEnabledProviders")
 public class TestPBMAC1Interop extends BaseTestInterop {
 
     @Parameter(0)
