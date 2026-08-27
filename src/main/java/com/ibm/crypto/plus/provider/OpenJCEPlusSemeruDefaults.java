@@ -11,7 +11,7 @@ package com.ibm.crypto.plus.provider;
 import com.ibm.crypto.plus.provider.ock.NativeOCKAdapterNonFIPS;
 import java.security.NoSuchAlgorithmException;
 import java.security.ProviderException;
-import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 
 public final class OpenJCEPlusSemeruDefaults extends OpenJCEPlusProvider {
 
@@ -38,10 +38,10 @@ public final class OpenJCEPlusSemeruDefaults extends OpenJCEPlusProvider {
             + "                                     PBEWithHmacSHA384AndAES_128, PBEWithHmacSHA384AndAES_256,\n"
             + "                                     PBEWithHmacSHA512AndAES_128, PBEWithHmacSHA512AndAES_256,\n"
             + "                                     PBEWithSHA1AndDESede, PBEWithSHA1AndRC2_40, PBEWithSHA1AndRC2_128,\n"
-            + "                                     PBEWithSHA1AndRC4_40, PBEWithSHA1AndRC4_128\n"
-            + "Secure random                      : HASHDRBG, SHA256DRBG, SHA512DRBG\n";
+            + "                                     PBEWithSHA1AndRC4_40, PBEWithSHA1AndRC4_128\n";
 
     private static final String PROVIDER_BASE_NAME = "OpenJCEPlusSemeruDefaults";
+    private static final AtomicLong suffixCounter = new AtomicLong(0);
 
     // Instance of this provider, so we don't have to call the provider list
     // to find ourselves or run the risk of not being in the list.
@@ -77,11 +77,10 @@ public final class OpenJCEPlusSemeruDefaults extends OpenJCEPlusProvider {
     }
 
     private static String generateRandomSuffix() {
-        return UUID.randomUUID()
-                .toString()
-                .replace("-", "")
-                .substring(0, 6)
-                .toUpperCase();
+        // XOR a AtomicLong counter with System.nanoTime() to produce a suffix that
+        // no two calls return the same suffix. No JCA provider lookup involved.
+        long value = suffixCounter.getAndIncrement() ^ System.nanoTime();
+        return String.format("%06X", value & 0xFFFFFFL);
     }
 
     // Return the instance of this class or create one if needed.
