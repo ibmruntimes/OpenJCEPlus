@@ -14,6 +14,7 @@ import java.security.ProviderException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings({"removal", "deprecation"})
 public final class OpenJCEPlusFIPS extends OpenJCEPlusProvider {
@@ -58,6 +59,10 @@ public final class OpenJCEPlusFIPS extends OpenJCEPlusProvider {
     // to find ourselves or run the risk of not being in the list.
     private static volatile OpenJCEPlusFIPS instance;
 
+    // Guards the one-time printing of the developer-mode / s390x warnings,
+    // shared across all instances of this provider.
+    private static volatile boolean warningsPrinted = false;
+
     private static boolean ockInitialized = false;
 
     private static final boolean isFIPSCertifiedPlatform;
@@ -98,23 +103,6 @@ public final class OpenJCEPlusFIPS extends OpenJCEPlusProvider {
             debug.println("New OpenJCEPlusFIPS instance");
         }
 
-        if (!isFIPSCertifiedPlatform) {
-            if (printFipsDeveloperModeWarning) {
-                System.out.println("WARNING: OpenJCEPlusFIPS is running in developer mode. Non production workload assumed. This environment is not certified for FIPS 140-3: " + osName + ":" + osArch);
-            }
-            if (debug != null) {
-                debug.println("WARNING: OpenJCEPlusFIPS is running in developer mode.  Non production workload assumed. This environment is not certified for FIPS 140-3: " + osName + ":" + osArch);
-            }
-        }
-
-        // Print FIPS 140-3 mode message for s390x Linux or z/OS platforms
-        if (osArch.contains("s390x")) {
-            System.out.println("FIPS 140-3 mode enabled (for evaluation only, not supported for production use)");
-            if (debug != null) {
-                debug.println("FIPS 140-3 mode enabled (for evaluation only, not supported for production use)");
-            }
-        }
-
         LoadStringConfig(this, DefaultFIPSProviderAttrs.getConfigString());
   
         if (instance == null) {
@@ -151,6 +139,50 @@ public final class OpenJCEPlusFIPS extends OpenJCEPlusProvider {
         OpenJCEPlusProvider getProvider() {
             return OpenJCEPlusFIPS.getInstance();
         }
+    }
+
+    // Print developer-mode and s390x warnings the first time a service is
+    // requested from any provider instance, rather than at construction time.
+    private void printWarningsOnce() {
+        if (warningsPrinted) {
+            return;
+        }
+
+        synchronized (OpenJCEPlusFIPS.class) {
+            if (warningsPrinted) {
+                return;
+            }
+            warningsPrinted = true;
+
+            if (!isFIPSCertifiedPlatform) {
+                if (printFipsDeveloperModeWarning) {
+                    System.out.println("WARNING: OpenJCEPlusFIPS is running in developer mode. Non production workload assumed. This environment is not certified for FIPS 140-3: " + osName + ":" + osArch);
+                }
+                if (debug != null) {
+                    debug.println("WARNING: OpenJCEPlusFIPS is running in developer mode.  Non production workload assumed. This environment is not certified for FIPS 140-3: " + osName + ":" + osArch);
+                }
+            }
+
+            // Print FIPS 140-3 mode message for s390x Linux or z/OS platforms
+            if (osArch.contains("s390x")) {
+                System.out.println("FIPS 140-3 mode enabled (for evaluation only, not supported for production use)");
+                if (debug != null) {
+                    debug.println("FIPS 140-3 mode enabled (for evaluation only, not supported for production use)");
+                }
+            }
+        }
+    }
+
+    @Override
+    public Service getService(String type, String algorithm) {
+        printWarningsOnce();
+        return super.getService(type, algorithm);
+    }
+
+    @Override
+    public Set<Service> getServices() {
+        printWarningsOnce();
+        return super.getServices();
     }
 
     ProviderContext getProviderContext() {
