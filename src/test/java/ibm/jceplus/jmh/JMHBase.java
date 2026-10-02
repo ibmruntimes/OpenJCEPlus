@@ -8,15 +8,18 @@
 
 package ibm.jceplus.jmh;
 
+import com.ibm.crypto.plus.provider.OpenJCEPlus;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.Provider;
+import java.security.Security;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.openjdk.jmh.profile.ClassloaderProfiler;
 import org.openjdk.jmh.profile.CompilerProfiler;
 import org.openjdk.jmh.profile.GCProfiler;
@@ -72,7 +75,7 @@ abstract public class JMHBase {
         optionsBuilder.addProfiler(StackProfiler.class);
         optionsBuilder.addProfiler(GCProfiler.class);
         optionsBuilder.addProfiler(ClassloaderProfiler.class);
-        
+
         // CompilerProfiler causes issues on ppc64le Linux which causes the Jenkins job to fail.
         // Add the compiler profiler for all other platforms.
         boolean isPpc64le = osArch.equals("ppc64le");
@@ -148,7 +151,7 @@ abstract public class JMHBase {
 
     protected void setup(String provider) throws Exception {
         logBenchmark();
-        
+
         if (allowedProviders == null) {
             allowedProviders = getAllowedProviders();
         }
@@ -163,20 +166,17 @@ abstract public class JMHBase {
 
     protected void insertProvider(String provider) throws Exception {
         if (provider.equalsIgnoreCase("OpenJCEPlus")) {
-            Provider myProvider = java.security.Security.getProvider("OpenJCEPlus");
+            Provider myProvider = Security.getProvider("OpenJCEPlus");
             if (myProvider == null) {
-                myProvider = (Provider) Class.forName("com.ibm.crypto.plus.provider.OpenJCEPlus")
-                        .getDeclaredConstructor().newInstance();
+                myProvider = new OpenJCEPlus();
             }
-            java.security.Security.insertProviderAt(myProvider, 1);
+            Security.insertProviderAt(myProvider, 1);
         } else if (provider.equalsIgnoreCase("BC")) {
-            Provider myProvider = java.security.Security.getProvider("BC");
+            Provider myProvider = Security.getProvider("BC");
             if (myProvider == null) {
-                myProvider = (Provider) Class
-                        .forName("org.bouncycastle.jce.provider.BouncyCastleProvider")
-                        .getDeclaredConstructor().newInstance();
+                myProvider = new BouncyCastleProvider();
             }
-            java.security.Security.insertProviderAt(myProvider, 1);
+            Security.insertProviderAt(myProvider, 1);
         }
     }
 }
