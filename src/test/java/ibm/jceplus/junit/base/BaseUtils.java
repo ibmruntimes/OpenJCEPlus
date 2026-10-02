@@ -1,5 +1,5 @@
 /*
- * Copyright IBM Corp. 2023, 2024
+ * Copyright IBM Corp. 2023, 2026
  *
  * This code is free software; you can redistribute it and/or modify it
  * under the terms provided by IBM in the LICENSE file that accompanied
@@ -8,10 +8,14 @@
 
 package ibm.jceplus.junit.base;
 
+import com.ibm.crypto.plus.provider.OpenJCEPlus;
+import com.ibm.crypto.plus.provider.OpenJCEPlusFIPS;
 import java.security.Provider;
+import java.security.Security;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 abstract public class BaseUtils {
 
@@ -66,46 +70,40 @@ abstract public class BaseUtils {
     }
 
 
-    public static Provider loadProvider(String providerName, String providerClassName)
-            throws Exception {
-        return loadProvider(providerName, providerClassName, true);
-    }
-
-
-    public static Provider loadProvider(String providerName, String providerClassName,
-            boolean addToProviderList) throws Exception {
-        Provider provider = java.security.Security.getProvider(providerName);
+    public static Provider loadProviderBC() throws Exception {
+        Provider provider = Security.getProvider(PROVIDER_BC);
         if (provider == null) {
-            provider = (Provider) Class.forName(providerClassName).getDeclaredConstructor().newInstance();
-            if (addToProviderList) {
-                java.security.Security.addProvider(provider);
-            }
+            provider = new BouncyCastleProvider();
+            Security.addProvider(provider);
         }
-
         return provider;
     }
 
 
-    public static Provider loadProviderBC() throws Exception {
-        return loadProvider(PROVIDER_BC, "org.bouncycastle.jce.provider.BouncyCastleProvider");
-    }
-
-
     public static Provider loadProviderOpenJCEPlus() throws Exception {
-        return loadProvider(PROVIDER_OpenJCEPlus, "com.ibm.crypto.plus.provider.OpenJCEPlus");
+        Provider provider = Security.getProvider(PROVIDER_OpenJCEPlus);
+        if (provider == null) {
+            provider = new OpenJCEPlus();
+            Security.addProvider(provider);
+        }
+        return provider;
     }
 
 
     public static Provider loadProviderOpenJCEPlusFIPS() throws Exception {
-        return loadProvider(PROVIDER_OpenJCEPlusFIPS,
-                "com.ibm.crypto.plus.provider.OpenJCEPlusFIPS");
+        Provider provider = Security.getProvider(PROVIDER_OpenJCEPlusFIPS);
+        if (provider == null) {
+            provider = new OpenJCEPlusFIPS();
+            Security.addProvider(provider);
+        }
+        return provider;
     }
 
 
     /**
      * Determines if we are running on an environment where a FIPS
      * certified library is known to exist.
-     * 
+     *
      * @return true if running within a known FIPS envionrment, false otherwise.
      */
     public static boolean getIsFIPSCertifiedPlatform() {
